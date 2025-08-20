@@ -4,12 +4,8 @@
 FROM maven:3.9.4-eclipse-temurin-17 AS builder
 WORKDIR /app
 
-# Copy only pom.xml first (for dependency caching)
-COPY pom.xml .
-RUN mvn dependency:go-offline -B
-
-# Copy the rest of the source code
-COPY src ./src
+# Copy everything (pom.xml + src folder)
+COPY . .
 
 # Build the Spring Boot JAR (skip tests for faster builds)
 RUN mvn clean package -DskipTests
